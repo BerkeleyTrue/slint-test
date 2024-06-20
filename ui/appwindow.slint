@@ -12,6 +12,8 @@ component MemoryTile inherits Rectangle {
     background: solved ? #34CE57 : #3960D5;
     animate background { duration: 800ms; }
 
+    border-radius: 4px;
+
     Image {
         source: icon;
         width: parent.width;
@@ -24,6 +26,8 @@ component MemoryTile inherits Rectangle {
         x: 0px;
         width: open_curtain ? 0px : (parent.width / 2);
         height: parent.height;
+        border-top-left-radius: parent.border-radius;
+        border-bottom-left-radius: parent.border-radius;
         animate width {
             duration: 250ms;
             easing: ease-in;
@@ -35,6 +39,9 @@ component MemoryTile inherits Rectangle {
         x: open_curtain ? parent.width : (parent.width / 2);
         width: open_curtain ? 0px : (parent.width / 2);
         height: parent.height;
+        border-top-right-radius: parent.border-radius;
+        border-bottom-right-radius: parent.border-radius;
+
         animate width {
             duration: 250ms;
             easing: ease-in;
@@ -62,7 +69,11 @@ export component AppWindow inherits Window {
     width: 326px;
     height: 326px;
 
-    in property <[TileData]> memory_tiles: [
+    callback check_if_pair_solved();
+    in property <bool> disable_tiles;
+    padding: 14px;
+
+    in-out property <[TileData]> memory_tiles: [
         { image: @image-url("icons/at.png") },
         { image: @image-url("icons/balance-scale.png") },
         { image: @image-url("icons/bicycle.png") },
@@ -82,7 +93,10 @@ export component AppWindow inherits Window {
         open_curtain: tile.image_visible || tile.solved;
         solved: tile.solved;
         clicked => {
-            tile.image_visible = !tile.image_visible;
+            if (!root.disable_tiles) {
+                tile.image_visible = !tile.image_visible;
+                root.check_if_pair_solved();
+            }
         }
     }
 }

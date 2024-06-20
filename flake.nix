@@ -21,7 +21,6 @@
       perSystem = {
         config,
         system,
-        lib,
         ...
       }: let
         pkgs = import nixpkgs {
@@ -53,6 +52,7 @@
             openssl
             cargo
             rustc
+            rustfmt
             libGL
             qt5.full
             ffmpeg
