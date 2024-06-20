@@ -11,7 +11,6 @@
   outputs = inputs @ {
     flake-parts,
     nixpkgs,
-    nixgl,
     ...
   }:
     flake-parts.lib.mkFlake {inherit inputs;} {
@@ -22,6 +21,7 @@
       perSystem = {
         config,
         system,
+        lib,
         ...
       }: let
         pkgs = import nixpkgs {
@@ -49,14 +49,14 @@
             config.boulder.devShell
           ];
 
-          buildInputs =
-            (with pkgs; [
-              cargo
-              rustc
-              libGL
-              qt5.full
-              ffmpeg
-            ]);
+          buildInputs = with pkgs; [
+            openssl
+            cargo
+            rustc
+            libGL
+            qt5.full
+            ffmpeg
+          ];
         };
       };
       flake = {};
